@@ -1,0 +1,9 @@
+{
+  "packageId": "0xcdbf834997c870c72409ff7ade2620d853ed7b5828fad5f7de698ac07e16f2c3",
+  "gameHouseId": "0x7c4e5d37b88bc9a513e4f119b116b2612827a879f20a9c895d5b5b4107be13ee",
+  "triviaHubId": "0x29eb7e2937bef9f4560b7cfbe1ce863bb675bb811edb53c9d69124d49e33f9bb",
+  "groupRegistryId": "0x49f09e0107223d7ad5beeec563dcff2b7e5c4476cb951b0e105f69c0fccb0dde",
+  "network": "testnet",
+  "deployer": "0x33a514d95ba2f0a4cd334d00a7d82120af22ce51cf53f4b3d41026733fb48eeb",
+  "deployedAt": "2025-01-20T00:00:00.000Z"
+}

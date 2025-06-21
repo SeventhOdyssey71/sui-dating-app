@@ -58,43 +58,78 @@ export function useMessages(recipientAddress: string | undefined) {
       throw new Error('Invalid recipient or message content');
     }
 
+    // Add optimistic message update IMMEDIATELY
+    const optimisticMessage: Message = {
+      id: `optimistic-${Date.now()}`,
+      sender: currentAccount?.address || '',
+      recipient: recipientAddress,
+      content: content,
+      timestamp: Date.now(),
+      is_read: false,
+    };
+    
+    // Add message to UI immediately
+    setMessages(prev => [optimisticMessage, ...prev]);
+
     return new Promise<void>((resolve, reject) => {
       sendBlockchainMessage(
         recipientAddress,
         content,
         (result) => {
-          // Add optimistic message update
-          const newMessage: Message = {
-            id: result.digest || Date.now().toString(),
-            sender: currentAccount?.address || '',
-            recipient: recipientAddress,
-            content: content,
-            timestamp: Date.now(),
-            is_read: false,
-          };
+          // Update the optimistic message with real ID
+          setMessages(prev => prev.map(msg => 
+            msg.id === optimisticMessage.id 
+              ? { ...msg, id: result.digest || msg.id }
+              : msg
+          ));
           
-          setMessages(prev => [newMessage, ...prev]);
+          // Fetch latest messages after successful send
+          setTimeout(() => fetchMessages(0), 500);
           resolve();
         },
         (error) => {
+          // Remove optimistic message on error
+          setMessages(prev => prev.filter(msg => msg.id !== optimisticMessage.id));
           reject(error);
         }
       );
     });
-  }, [recipientAddress, currentAccount?.address, sendBlockchainMessage]);
+  }, [recipientAddress, currentAccount?.address, sendBlockchainMessage, fetchMessages]);
 
+  // Load messages from localStorage on mount for instant display
   useEffect(() => {
     if (recipientAddress && currentAccount?.address) {
+      // Load cached messages immediately
+      const cacheKey = `messages_${currentAccount.address}_${recipientAddress}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          const cachedMessages = JSON.parse(cached);
+          setMessages(cachedMessages);
+        } catch (e) {
+          console.error('Failed to parse cached messages:', e);
+        }
+      }
+      
+      // Then fetch fresh data
       refresh();
       
-      // Set up polling for new messages
+      // Set up more aggressive polling for new messages
       const interval = setInterval(() => {
         fetchMessages(0);
-      }, 5000); // Poll every 5 seconds
+      }, 2000); // Poll every 2 seconds instead of 5
 
       return () => clearInterval(interval);
     }
   }, [recipientAddress, currentAccount?.address]);
+
+  // Cache messages in localStorage whenever they change
+  useEffect(() => {
+    if (messages.length > 0 && recipientAddress && currentAccount?.address) {
+      const cacheKey = `messages_${currentAccount.address}_${recipientAddress}`;
+      localStorage.setItem(cacheKey, JSON.stringify(messages.slice(0, 50))); // Cache last 50 messages
+    }
+  }, [messages, recipientAddress, currentAccount?.address]);
 
   return {
     messages,

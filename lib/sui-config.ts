@@ -2,7 +2,7 @@
 // Update these values after deploying your contract to testnet
 
 export const SUI_CONTRACTS = {
-  packageId: (process.env.NEXT_PUBLIC_PACKAGE_ID || '0x0').trim(),
+  packageId: (process.env.NEXT_PUBLIC_MESSAGE_PACKAGE_ID || process.env.NEXT_PUBLIC_PACKAGE_ID || '0x0').trim(),
   messageHubId: (process.env.NEXT_PUBLIC_MESSAGE_HUB_ID || '0x0').trim(),
   network: (process.env.NEXT_PUBLIC_SUI_NETWORK || 'testnet').trim(),
 } as const;

@@ -18,7 +18,7 @@ export interface Message {
   recipient: string;
   content: string;
   timestamp: number;
-  isRead: boolean;
+  is_read: boolean;
   replyTo?: string;
 }
 

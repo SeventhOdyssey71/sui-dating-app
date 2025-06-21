@@ -66,9 +66,19 @@ export function MatchedChatInterface({ matchedProfile }: MatchedChatInterfacePro
       // This will call the blockchain messaging contract
       await sendMessage(message.trim());
       setMessage('');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to send message:', error);
-      alert('Failed to send message. Please try again.');
+      
+      // Show more specific error messages
+      if (error.message?.includes('Insufficient funds')) {
+        alert('Insufficient SUI balance to send message. Please add funds to your wallet.');
+      } else if (error.message?.includes('gas')) {
+        alert('Transaction failed due to gas issues. Please try again.');
+      } else if (error.message?.includes('rejected')) {
+        alert('Transaction was rejected. Please try again.');
+      } else {
+        alert(`Failed to send message: ${error.message || 'Unknown error'}`);
+      }
     } finally {
       setIsSending(false);
     }

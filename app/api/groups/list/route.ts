@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSuiClient } from '@/lib/sui-client';
+import { suiClient } from '@/lib/sui-client';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const userAddress = searchParams.get('address');
 
-    const client = getSuiClient();
+    const client = suiClient;
 
     // Get GroupRegistry object
     const registry = await client.getObject({

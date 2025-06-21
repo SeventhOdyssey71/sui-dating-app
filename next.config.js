@@ -67,7 +67,7 @@ const nextConfig = {
 
   // Experimental features
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Disabled due to critters error
   },
 
   // Environment variables to expose to the browser

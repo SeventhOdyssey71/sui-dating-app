@@ -1,6 +1,8 @@
 import { useSignAndExecuteTransaction } from '@mysten/dapp-kit';
-import { Transaction } from '@mysten/sui/transactions';
 import { SUI_CONTRACTS, SUI_CLOCK_OBJECT_ID, GAS_BUDGET } from '@/lib/sui-config';
+
+// @ts-ignore - Transaction type conflict between versions
+const { Transaction } = require('@mysten/sui/transactions');
 
 export function useTransactionExecution() {
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
@@ -39,10 +41,6 @@ export function useTransactionExecution() {
     signAndExecute(
       {
         transaction: tx,
-        options: {
-          showEffects: true,
-          showEvents: true,
-        },
       },
       {
         onSuccess: (result) => {
@@ -85,9 +83,6 @@ export function useTransactionExecution() {
     signAndExecute(
       {
         transaction: tx,
-        options: {
-          showEffects: true,
-        },
       },
       {
         onSuccess: (result) => {
@@ -128,10 +123,6 @@ export function useTransactionExecution() {
     signAndExecute(
       {
         transaction: tx,
-        options: {
-          showEffects: true,
-          showEvents: true,
-        },
       },
       {
         onSuccess: (result) => {
@@ -176,10 +167,6 @@ export function useTransactionExecution() {
     signAndExecute(
       {
         transaction: tx,
-        options: {
-          showEffects: true,
-          showEvents: true,
-        },
       },
       {
         onSuccess: (result) => {
@@ -246,10 +233,6 @@ export function useTransactionExecution() {
     signAndExecute(
       {
         transaction: tx,
-        options: {
-          showEffects: true,
-          showEvents: true,
-        },
       },
       {
         onSuccess: (result) => {

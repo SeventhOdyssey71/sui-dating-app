@@ -39,10 +39,10 @@ export function useConversations() {
             name: `${partner.slice(0, 6)}...${partner.slice(-4)}`, // Shortened address as name
             lastMessage: message.content,
             timestamp: message.timestamp,
-            unread: message.sender !== currentAccount && !message.isRead ? 1 : 0,
+            unread: message.sender !== currentAccount && !message.is_read ? 1 : 0,
             time: formatTime(message.timestamp)
           });
-        } else if (message.sender !== currentAccount && !message.isRead) {
+        } else if (message.sender !== currentAccount && !message.is_read) {
           // Increment unread count
           const conv = conversationMap.get(partner);
           conv.unread += 1;

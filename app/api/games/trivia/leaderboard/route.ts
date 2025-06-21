@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSuiClient } from '@/lib/sui-client';
+import { suiClient } from '@/lib/sui-client';
 import { blockchainCache, CACHE_KEYS } from '@/lib/cache/blockchain-cache';
 
 export async function GET(request: NextRequest) {
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: true, leaderboard: cachedLeaderboard });
     }
 
-    const client = getSuiClient();
+    const client = suiClient;
 
     // Get TriviaHub object
     const triviaHub = await client.getObject({

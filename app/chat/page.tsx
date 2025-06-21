@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { WalletConnect } from '@/components/WalletConnect';
 import { ChatInterface } from '@/components/ChatInterface';
@@ -11,7 +11,7 @@ import { useConversations } from '@/hooks/useConversations';
 import { subscribeToMessages } from '@/lib/sui-client';
 import { useDatingPlatform } from '@/hooks/useDatingPlatform';
 
-export default function ChatPage() {
+function ChatPageContent() {
   const { isConnected, currentAccount } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -242,12 +242,14 @@ export default function ChatPage() {
           {activeChat ? (
             matches.has(activeChat) ? (
               <MatchedChatInterface
-                recipientAddress={activeChat}
-                recipientName={conversations.find(c => c.address === activeChat)?.name || matchProfiles.get(activeChat)?.name}
-                matchData={{
-                  profileImage: matchProfiles.get(activeChat)?.images?.[0],
-                  interests: matchProfiles.get(activeChat)?.interests,
-                  isMatch: true
+                matchedProfile={{
+                  id: activeChat,
+                  name: conversations.find(c => c.address === activeChat)?.name || matchProfiles.get(activeChat)?.name || 'Unknown',
+                  age: matchProfiles.get(activeChat)?.age || 25,
+                  bio: matchProfiles.get(activeChat)?.bio || '',
+                  location: matchProfiles.get(activeChat)?.location || 'Unknown',
+                  images: matchProfiles.get(activeChat)?.images || [],
+                  walletAddress: activeChat
                 }}
               />
             ) : (
@@ -335,5 +337,20 @@ export default function ChatPage() {
         </div>
       )}
     </main>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500">Loading chat...</p>
+        </div>
+      </div>
+    }>
+      <ChatPageContent />
+    </Suspense>
   );
 }

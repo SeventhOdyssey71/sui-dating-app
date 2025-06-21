@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { WalletConnect } from '@/components/WalletConnect';
 import { DiceGame } from '@/components/games/DiceGame';
 import { ArrowLeft, Heart, Dices } from 'lucide-react';
 
-export default function DiceGamePage() {
+function DiceGameContent() {
   const { isConnected } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -122,5 +123,20 @@ export default function DiceGamePage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function DiceGamePage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500">Loading game...</p>
+        </div>
+      </div>
+    }>
+      <DiceGameContent />
+    </Suspense>
   );
 }

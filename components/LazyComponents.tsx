@@ -18,18 +18,19 @@ export const TriviaGame = dynamic(
 );
 
 // Lazy load heavy components
-export const NFTGallery = dynamic(
-  () => import('./NFTGallery'),
-  { 
-    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
-    ssr: false 
-  }
-);
+// NOTE: NFTGallery and MessageList components are not implemented yet
+// export const NFTGallery = dynamic(
+//   () => import('./NFTGallery'),
+//   { 
+//     loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
+//     ssr: false 
+//   }
+// );
 
-export const MessageList = dynamic(
-  () => import('./MessageList'),
-  { 
-    loading: () => <div className="animate-pulse h-96 bg-muted rounded-lg" />,
-    ssr: false 
-  }
-);
+// export const MessageList = dynamic(
+//   () => import('./MessageList'),
+//   { 
+//     loading: () => <div className="animate-pulse h-96 bg-muted rounded-lg" />,
+//     ssr: false 
+//   }
+// );

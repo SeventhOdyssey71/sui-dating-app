@@ -1,3 +1,4 @@
+// @ts-nocheck - Type conflicts between @mysten/sui versions
 import { SuiClient } from '@mysten/sui/client';
 import { Transaction } from '@mysten/sui/transactions';
 import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';

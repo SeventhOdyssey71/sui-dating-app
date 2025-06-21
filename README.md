@@ -33,7 +33,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/discoveer-messenger.git
+git clone <your-repository-url>
 cd discoveer-messenger
 
 # Install dependencies
@@ -73,20 +73,20 @@ For the best experience, interact with the deployed contracts using the Sui CLI:
 ### Send a Message
 ```bash
 sui client call \
-  --package 0xd4cb9a02cab2481e241997af5e98f50305232893b66afb064a1e37f42f8e0528 \
+  --package <YOUR_MESSAGING_PACKAGE_ID> \
   --module messaging \
   --function send_message \
-  --args 0xdc3351f49f222c37c9a20f27d2a22b8726a18472bbb37018a11ebbcdd07d9954 <recipient_address> <message_bytes> 0x6 \
+  --args <MESSAGE_HUB_ID> <recipient_address> <message_bytes> 0x6 \
   --gas-budget 10000000
 ```
 
 ### Play Dice Game
 ```bash
 sui client call \
-  --package 0xee0b758075ff9449750dd2998618589136104837b1ededd3ed585bc6fb9f9dfc \
+  --package <YOUR_GAMES_PACKAGE_ID> \
   --module dice_game \
   --function play_dice \
-  --args 0xcbe4b8a1047108928ab0a8ac835079a73c04896cdde0d2b41e9e2308ad76282b <guess_1-6> <bet_coin> 0x6 \
+  --args <DICE_GAME_HOUSE_ID> <guess_1-6> <bet_coin> 0x6 \
   --gas-budget 10000000
 ```
 
@@ -132,23 +132,26 @@ The messaging system is built on a Sui Move smart contract that provides:
 
 ## 📦 Smart Contracts
 
-All contracts are deployed and verified on Sui Testnet:
+All contracts are deployed and verified on Sui Testnet. You need to deploy these contracts and update your `.env.local` file with the appropriate values:
 
 ### Messaging Contract
-- **Package**: `0xd4cb9a02cab2481e241997af5e98f50305232893b66afb064a1e37f42f8e0528`
-- **MessageHub**: `0xdc3351f49f222c37c9a20f27d2a22b8726a18472bbb37018a11ebbcdd07d9954`
+- **Package**: Set as `NEXT_PUBLIC_MESSAGE_PACKAGE_ID`
+- **MessageHub**: Set as `NEXT_PUBLIC_MESSAGE_HUB_ID`
 
 ### NFT Contract
-- **Package**: `0x44a258ad8ea5532023e02f910869fc0b9aec2b464cc6671f414445e4ffbcf551`
-- **Collection**: `0x032d7b691908afb6fe15d32f835008821aa6efd262d5b691aa7414a137627104`
+- **Package**: Set as `NEXT_PUBLIC_NFT_PACKAGE_ID`
+- **Collection**: Set as `NEXT_PUBLIC_NFT_COLLECTION_ID`
 
 ### Games Contract
-- **Package**: `0xee0b758075ff9449750dd2998618589136104837b1ededd3ed585bc6fb9f9dfc`
-- **Dice Game House**: `0xcbe4b8a1047108928ab0a8ac835079a73c04896cdde0d2b41e9e2308ad76282b`
-- **Trivia Hub**: `0x844f46922dc01edddfca80fae4ee31a86e329b11f0799a237652fb290bf77dd1`
-- **Group Registry**: `0xf7212888b14d87f4d343ab87a211e2acab4ab07d6fc2969add05c8431329e2f3`
+- **Package**: Set as `NEXT_PUBLIC_GAMES_PACKAGE_ID`
+- **Dice Game House**: Set as `NEXT_PUBLIC_GAME_HOUSE_ID`
+- **Trivia Hub**: Set as `NEXT_PUBLIC_TRIVIA_HUB_ID`
+- **Group Registry**: Set as `NEXT_PUBLIC_GROUP_REGISTRY_ID`
 
-The `.env.local` file has been pre-configured with these values.
+### Dating Platform Contract
+- **Package**: Set as `NEXT_PUBLIC_DATING_PACKAGE_ID`
+- **User Registry**: Set as `NEXT_PUBLIC_USER_REGISTRY_ID`
+- **Match Registry**: Set as `NEXT_PUBLIC_MATCH_REGISTRY_ID`
 
 3. **Access Chat Interface**:
    - Connect your wallet on the home page

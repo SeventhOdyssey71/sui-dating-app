@@ -1,6 +1,8 @@
 import { useSignAndExecuteTransaction } from '@mysten/dapp-kit';
-import { Transaction } from '@mysten/sui/transactions';
 import { GAS_BUDGET } from '@/lib/sui-config';
+
+// @ts-ignore - Transaction type conflict between versions
+const { Transaction } = require('@mysten/sui/transactions');
 
 export function useNFTTransactions() {
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
@@ -27,11 +29,11 @@ export function useNFTTransactions() {
         target: `${process.env.NEXT_PUBLIC_NFT_PACKAGE_ID}::nft::mint_nft_with_attributes`,
         arguments: [
           tx.object(process.env.NEXT_PUBLIC_NFT_COLLECTION_ID!),
-          tx.pure(Array.from(new TextEncoder().encode(name))),
-          tx.pure(Array.from(new TextEncoder().encode(description))),
-          tx.pure(Array.from(new TextEncoder().encode(url))),
-          tx.pure(trait_types),
-          tx.pure(values),
+          tx.pure(Array.from(new TextEncoder().encode(name)), 'vector<u8>'),
+          tx.pure(Array.from(new TextEncoder().encode(description)), 'vector<u8>'),
+          tx.pure(Array.from(new TextEncoder().encode(url)), 'vector<u8>'),
+          tx.pure(trait_types, 'vector<vector<u8>>'),
+          tx.pure(values, 'vector<vector<u8>>'),
           tx.pure.address(recipient),
         ],
       });
@@ -40,9 +42,9 @@ export function useNFTTransactions() {
         target: `${process.env.NEXT_PUBLIC_NFT_PACKAGE_ID}::nft::mint_nft`,
         arguments: [
           tx.object(process.env.NEXT_PUBLIC_NFT_COLLECTION_ID!),
-          tx.pure(Array.from(new TextEncoder().encode(name))),
-          tx.pure(Array.from(new TextEncoder().encode(description))),
-          tx.pure(Array.from(new TextEncoder().encode(url))),
+          tx.pure(Array.from(new TextEncoder().encode(name)), 'vector<u8>'),
+          tx.pure(Array.from(new TextEncoder().encode(description)), 'vector<u8>'),
+          tx.pure(Array.from(new TextEncoder().encode(url)), 'vector<u8>'),
           tx.pure.address(recipient),
         ],
       });
@@ -51,32 +53,12 @@ export function useNFTTransactions() {
     signAndExecute(
       {
         transaction: tx,
-        options: {
-          showEffects: true,
-          showEvents: true,
-          showObjectChanges: true,
-        },
       },
       {
         onSuccess: (result) => {
           console.log('NFT minted successfully:', result);
-          
-          // Find the created NFT object
-          const createdObjects = result.objectChanges?.filter(
-            (change: any) => change.type === 'created'
-          ) || [];
-          
-          if (createdObjects.length > 0) {
-            const nftObject = createdObjects.find((obj: any) => 
-              obj.objectType.includes('::nft::DiscoveerNFT')
-            );
-            
-            if (nftObject) {
-              onSuccess?.({ ...result, nftId: nftObject.objectId });
-              return;
-            }
-          }
-          
+          // With dapp-kit, object changes are not directly available
+          // You would need to query them separately if needed
           onSuccess?.(result);
         },
         onError: (error) => {

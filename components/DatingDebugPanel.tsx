@@ -42,7 +42,7 @@ export function DatingDebugPanel() {
       ]);
 
       setStats({
-        totalUsers: registry.data?.content?.fields?.total_users || 0,
+        totalUsers: (registry.data?.content as any)?.fields?.total_users || 0,
         recentUsers: userEvents.data.length,
         recentSwipes: swipeEvents.data.length,
         recentMatches: matchEvents.data.length,

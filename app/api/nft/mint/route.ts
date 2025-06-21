@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     if (result.events) {
       for (const event of result.events) {
         if (event.type.includes('NFTMinted')) {
-          nftId = event.parsedJson?.object_id;
+          nftId = (event.parsedJson as any)?.object_id;
           break;
         }
       }

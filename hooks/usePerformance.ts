@@ -19,8 +19,8 @@ export function usePerformance(componentName: string) {
     }
 
     // Report to analytics if needed
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'timing_complete', {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'timing_complete', {
         name: componentName,
         value: Math.round(renderTime),
         event_category: 'Performance',

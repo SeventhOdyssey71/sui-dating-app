@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (result.events) {
       for (const event of result.events) {
         if (event.type.includes('MessageSent')) {
-          messageId = event.parsedJson?.message_id;
+          messageId = (event.parsedJson as any)?.message_id;
           break;
         }
       }

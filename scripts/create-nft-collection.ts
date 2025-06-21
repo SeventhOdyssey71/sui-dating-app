@@ -37,11 +37,10 @@ async function createNFTCollection() {
   );
   
   if (collectionObject) {
-    console.log('NFT Collection created:', collectionObject.objectId);
+    console.log('NFT Collection created:', (collectionObject as any).objectId);
   }
   
   return result;
 }
 
 createNFTCollection().catch(console.error);
-EOF < /dev/null

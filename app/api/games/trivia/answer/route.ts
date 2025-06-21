@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Transaction } from '@mysten/sui/transactions';
-import { getSuiClient } from '@/lib/sui-client';
+import { suiClient } from '@/lib/sui-client';
 import { getKeypairFromPrivateKey } from '@/lib/sui-utils';
 
 export async function POST(request: NextRequest) {
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = getSuiClient();
+    const client = suiClient;
     const keypair = getKeypairFromPrivateKey(senderPrivateKey);
     const sender = keypair.toSuiAddress();
 
